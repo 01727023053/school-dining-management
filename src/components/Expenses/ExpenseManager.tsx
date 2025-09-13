@@ -29,17 +29,6 @@ const ExpenseManager: React.FC = () => {
   const todayExpenses = expenses.filter(e => e.date === format(new Date(), 'yyyy-MM-dd'));
   const todayTotal = todayExpenses.reduce((sum, e) => sum + e.totalPrice, 0);
 
-  const categories = [
-    'চাল-ডাল',
-    'সবজি',
-    'মাছ-মাংস',
-    'তেল-মসলা',
-    'গ্যাস',
-    'বিদ্যুৎ',
-    'পানি',
-    'অন্যান্য'
-  ];
-
   const getCategoryIcon = (category: string) => {
     switch (category) {
       case 'চাল-ডাল':
@@ -165,7 +154,6 @@ const ExpenseManager: React.FC = () => {
       <div className="bg-white rounded-lg shadow-sm p-6">
         <h3 className="text-lg font-semibold text-gray-800 mb-4 font-bengali">ক্যাটেগরি অনুযায়ী খরচ</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-          {categories.map(category => {
           {EXPENSE_CATEGORIES.map(category => {
             const categoryExpenses = expenses.filter(e => e.category === category);
             const categoryTotal = categoryExpenses.reduce((sum, e) => sum + e.totalPrice, 0);
@@ -201,7 +189,6 @@ const ExpenseManager: React.FC = () => {
             className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-blue-500 focus:border-transparent"
           >
             <option value="all">সব ক্যাটেগরি</option>
-            {categories.map(category => (
             {EXPENSE_CATEGORIES.map(category => (
               <option key={category} value={category}>{category}</option>
             ))}
