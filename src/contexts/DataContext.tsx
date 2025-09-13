@@ -520,8 +520,13 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setBiometricDevices(prev => prev.filter(d => d.id !== id));
   };
 
-  // Render a loading state until data is populated
-  if (students.length === 0) {
+  // Render a loading state until all initial data is populated.
+  // We check `students` as a representative slice of data.
+  // The initial state is an empty array, and useEffect populates it.
+  // This check ensures child components don't render with empty/incomplete data
+  // which could cause runtime errors.
+  const isLoading = students.length === 0 && expenses.length === 0;
+  if (isLoading) {
     return <div>Loading...</div>; // Or a spinner component
   }
 

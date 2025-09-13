@@ -42,14 +42,22 @@ export interface Payment {
   status: 'pending' | 'completed' | 'failed';
 }
 
+export interface InventoryItem {
+  id: string;
+  name: string;
+  unit: 'kg' | 'litre' | 'piece' | 'dozen' | 'other';
+  stock: number;
+  lowStockThreshold: number;
+}
+
 export interface Expense {
   id: string;
   category: string;
-  item: string;
+  item: string; // অথবা itemId: string ব্যবহার করতে পারেন
   quantity: number;
   unitPrice: number;
   totalPrice: number;
-  supplierId?: string;
+  supplierId?: string; // সরবরাহকারী
   date: string;
   description?: string;
 }
