@@ -37,14 +37,14 @@ export const useData = () => {
 };
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [students, setStudents] = useState<Student[] | undefined>(undefined);
-  const [attendance, setAttendance] = useState<Attendance[] | undefined>(undefined);
-  const [payments, setPayments] = useState<Payment[] | undefined>(undefined);
-  const [expenses, setExpenses] = useState<Expense[] | undefined>(undefined);
-  const [suppliers, setSuppliers] = useState<Supplier[] | undefined>(undefined);
-  const [dueCustomers, setDueCustomers] = useState<DueCustomer[] | undefined>(undefined);
-  const [cashEntries, setCashEntries] = useState<CashEntry[] | undefined>(undefined);
-  const [biometricDevices, setBiometricDevices] = useState<BiometricDevice[] | undefined>(undefined);
+  const [students, setStudents] = useState<Student[]>([]);
+  const [attendance, setAttendance] = useState<Attendance[]>([]);
+  const [payments, setPayments] = useState<Payment[]>([]);
+  const [expenses, setExpenses] = useState<Expense[]>([]);
+  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
+  const [dueCustomers, setDueCustomers] = useState<DueCustomer[]>([]);
+  const [cashEntries, setCashEntries] = useState<CashEntry[]>([]);
+  const [biometricDevices, setBiometricDevices] = useState<BiometricDevice[]>([]);
 
   // Load demo data
   useEffect(() => {
@@ -521,20 +521,20 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
   };
 
   // Render a loading state until data is populated
-  if (students === undefined) {
+  if (students.length === 0) {
     return <div>Loading...</div>; // Or a spinner component
   }
 
   return (
     <DataContext.Provider value={{
-      students: students || [],
-      attendance: attendance || [],
-      payments: payments || [],
-      expenses: expenses || [],
-      suppliers: suppliers || [],
-      dueCustomers: dueCustomers || [],
-      cashEntries: cashEntries || [],
-      biometricDevices: biometricDevices || [],
+      students,
+      attendance,
+      payments,
+      expenses,
+      suppliers,
+      dueCustomers,
+      cashEntries,
+      biometricDevices,
       addStudent,
       updateStudent,
       addAttendance,
