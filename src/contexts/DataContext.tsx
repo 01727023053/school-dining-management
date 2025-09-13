@@ -15,6 +15,7 @@ interface DataContextType {
   addAttendance: (attendance: Omit<Attendance, 'id'>) => void;
   addPayment: (payment: Omit<Payment, 'id'>) => void;
   addExpense: (expense: Omit<Expense, 'id'>) => void;
+  updateExpense: (id: string, expense: Partial<Expense>) => void;
   addSupplier: (supplier: Omit<Supplier, 'id'>) => void;
   updateSupplier: (id: string, supplier: Partial<Supplier>) => void;
   addDueCustomer: (customer: Omit<DueCustomer, 'id'>) => void;
@@ -29,21 +30,21 @@ const DataContext = createContext<DataContextType | undefined>(undefined);
 
 export const useData = () => {
   const context = useContext(DataContext);
-  if (context === undefined) {
+  if (!context) {
     throw new Error('useData must be used within a DataProvider');
   }
   return context;
 };
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [students, setStudents] = useState<Student[]>([]);
-  const [attendance, setAttendance] = useState<Attendance[]>([]);
-  const [payments, setPayments] = useState<Payment[]>([]);
-  const [expenses, setExpenses] = useState<Expense[]>([]);
-  const [suppliers, setSuppliers] = useState<Supplier[]>([]);
-  const [dueCustomers, setDueCustomers] = useState<DueCustomer[]>([]);
-  const [cashEntries, setCashEntries] = useState<CashEntry[]>([]);
-  const [biometricDevices, setBiometricDevices] = useState<BiometricDevice[]>([]);
+  const [students, setStudents] = useState<Student[] | undefined>(undefined);
+  const [attendance, setAttendance] = useState<Attendance[] | undefined>(undefined);
+  const [payments, setPayments] = useState<Payment[] | undefined>(undefined);
+  const [expenses, setExpenses] = useState<Expense[] | undefined>(undefined);
+  const [suppliers, setSuppliers] = useState<Supplier[] | undefined>(undefined);
+  const [dueCustomers, setDueCustomers] = useState<DueCustomer[] | undefined>(undefined);
+  const [cashEntries, setCashEntries] = useState<CashEntry[] | undefined>(undefined);
+  const [biometricDevices, setBiometricDevices] = useState<BiometricDevice[] | undefined>(undefined);
 
   // Load demo data
   useEffect(() => {
@@ -472,6 +473,10 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setExpenses(prev => [...prev, newExpense]);
   };
 
+  const updateExpense = (id: string, expenseUpdate: Partial<Expense>) => {
+    setExpenses(prev => prev.map(e => e.id === id ? { ...e, ...expenseUpdate } : e));
+  };
+
   const addSupplier = (supplier: Omit<Supplier, 'id'>) => {
     const newSupplier = { ...supplier, id: Date.now().toString() };
     setSuppliers(prev => [...prev, newSupplier]);
@@ -515,21 +520,27 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setBiometricDevices(prev => prev.filter(d => d.id !== id));
   };
 
+  // Render a loading state until data is populated
+  if (students === undefined) {
+    return <div>Loading...</div>; // Or a spinner component
+  }
+
   return (
     <DataContext.Provider value={{
-      students,
-      attendance,
-      payments,
-      expenses,
-      suppliers,
-      dueCustomers,
-      cashEntries,
-      biometricDevices,
+      students: students || [],
+      attendance: attendance || [],
+      payments: payments || [],
+      expenses: expenses || [],
+      suppliers: suppliers || [],
+      dueCustomers: dueCustomers || [],
+      cashEntries: cashEntries || [],
+      biometricDevices: biometricDevices || [],
       addStudent,
       updateStudent,
       addAttendance,
       addPayment,
       addExpense,
+      updateExpense,
       addSupplier,
       updateSupplier,
       addDueCustomer,

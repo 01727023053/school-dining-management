@@ -80,7 +80,7 @@ export interface DueCustomer {
 
 export interface CashEntry {
   id: string;
-  source: 'home' | 'match' | 'shop' | 'meal_payment' | 'other';
+  source: 'home' | 'match' | 'shop' | 'meal_payment' | 'expense' | 'other';
   amount: number;
   description: string;
   date: string;

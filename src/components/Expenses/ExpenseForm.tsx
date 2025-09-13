@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Calculator } from 'lucide-react';
 import { useData } from '../../contexts/DataContext';
 import toast from 'react-hot-toast';
@@ -6,10 +6,11 @@ import toast from 'react-hot-toast';
 interface ExpenseFormProps {
   onClose: () => void;
   onSave: () => void;
+  editExpenseId?: string;
 }
 
-const ExpenseForm: React.FC<ExpenseFormProps> = ({ onClose, onSave }) => {
-  const { addExpense, suppliers } = useData();
+const ExpenseForm: React.FC<ExpenseFormProps> = ({ onClose, onSave, editExpenseId }) => {
+  const { addExpense, updateExpense, suppliers, expenses } = useData();
   const [formData, setFormData] = useState({
     category: '',
     item: '',
@@ -31,10 +32,27 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onClose, onSave }) => {
   ];
 
   const totalPrice = formData.quantity * formData.unitPrice;
+  const isEditing = !!editExpenseId;
+
+  useEffect(() => {
+    if (isEditing && editExpenseId) {
+      const expenseToEdit = expenses.find(expense => expense.id === editExpenseId);
+      if (expenseToEdit) {
+        setFormData({
+          category: expenseToEdit.category,
+          item: expenseToEdit.item,
+          quantity: expenseToEdit.quantity,
+          unitPrice: expenseToEdit.unitPrice,
+          supplierId: expenseToEdit.supplierId || '',
+          description: expenseToEdit.description || ''
+        });
+      }
+    }
+  }, [editExpenseId, expenses, isEditing]);
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    
+
     if (!formData.category || !formData.item) {
       toast.error('সব প্রয়োজনীয় তথ্য পূরণ করুন');
       return;
@@ -45,18 +63,32 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onClose, onSave }) => {
       return;
     }
 
-    addExpense({
-      category: formData.category,
-      item: formData.item,
-      quantity: formData.quantity,
-      unitPrice: formData.unitPrice,
-      totalPrice: totalPrice,
-      supplierId: formData.supplierId || undefined,
-      date: new Date().toISOString().split('T')[0],
-      description: formData.description || undefined
-    });
-    
-    toast.success('খরচ সফলভাবে যোগ করা হয়েছে');
+    if (isEditing && editExpenseId) {
+      updateExpense(editExpenseId, {
+        category: formData.category,
+        item: formData.item,
+        quantity: formData.quantity,
+        unitPrice: formData.unitPrice,
+        totalPrice: totalPrice,
+        supplierId: formData.supplierId || undefined,
+        description: formData.description || undefined
+      });
+
+      toast.success('খরচ সফলভাবে আপডেট করা হয়েছে');
+    } else {
+      addExpense({
+        category: formData.category,
+        item: formData.item,
+        quantity: formData.quantity,
+        unitPrice: formData.unitPrice,
+        totalPrice: totalPrice,
+        supplierId: formData.supplierId || undefined,
+        date: new Date().toISOString().split('T')[0],
+        description: formData.description || undefined
+      });
+
+      toast.success('খরচ সফলভাবে যোগ করা হয়েছে');
+    }
     onSave();
   };
 
@@ -79,7 +111,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onClose, onSave }) => {
           <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-lg leading-6 font-medium text-gray-900 font-bengali">
-                নতুন খরচ যোগ করুন
+                {isEditing ? 'খরচ সম্পাদনা করুন' : 'নতুন খরচ যোগ করুন'}
               </h3>
               <button
                 onClick={onClose}
@@ -201,7 +233,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({ onClose, onSave }) => {
                   type="submit"
                   className="px-4 py-2 bg-blue-600 border border-transparent rounded-md text-sm font-medium text-white hover:bg-blue-700 font-bengali"
                 >
-                  খরচ যোগ করুন
+                  {isEditing ? 'আপডেট করুন' : 'খরচ যোগ করুন'}
                 </button>
               </div>
             </form>

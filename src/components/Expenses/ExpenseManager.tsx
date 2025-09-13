@@ -1,14 +1,14 @@
 import React, { useState } from 'react';
-import { Plus, Search, ShoppingCart, Calendar, Filter, Download, Edit, Trash2, Eye } from 'lucide-react';
+import { Plus, Search, ShoppingCart, Calendar, Download, Edit, Trash2, Eye } from 'lucide-react';
 import { useData } from '../../contexts/DataContext';
 import { format } from 'date-fns';
 import ExpenseForm from './ExpenseForm';
-import { EXPENSE_CATEGORIES } from '../../constants';
+import { EXPENSE_CATEGORIES } from '../../../constants';
 import ExpenseDetails from './ExpenseDetails';
 import toast from 'react-hot-toast';
 
 const ExpenseManager: React.FC = () => {
-  const { expenses, suppliers } = useData();
+  const { expenses } = useData();
   const [showForm, setShowForm] = useState(false);
   const [selectedExpense, setSelectedExpense] = useState<string | null>(null);
   const [editingExpense, setEditingExpense] = useState<string | null>(null);
@@ -74,7 +74,7 @@ const ExpenseManager: React.FC = () => {
       totalExpenses: totalExpenses,
       todayTotal: todayTotal,
       expenseCount: expenses.length,
-      categories: categories.map(cat => ({
+      categories: EXPENSE_CATEGORIES.map(cat => ({
         category: cat,
         total: expenses.filter(e => e.category === cat).reduce((sum, e) => sum + e.totalPrice, 0),
         count: expenses.filter(e => e.category === cat).length
@@ -318,6 +318,7 @@ const ExpenseManager: React.FC = () => {
             setShowForm(false);
             setEditingExpense(null);
           }}
+          editExpenseId={editingExpense || undefined}
         />
       )}
 
