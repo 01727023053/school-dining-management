@@ -3,6 +3,7 @@ import { Plus, Search, ShoppingCart, Calendar, Filter, Download, Edit, Trash2, E
 import { useData } from '../../contexts/DataContext';
 import { format } from 'date-fns';
 import ExpenseForm from './ExpenseForm';
+import { EXPENSE_CATEGORIES } from '../../constants';
 import ExpenseDetails from './ExpenseDetails';
 import toast from 'react-hot-toast';
 
@@ -165,6 +166,7 @@ const ExpenseManager: React.FC = () => {
         <h3 className="text-lg font-semibold text-gray-800 mb-4 font-bengali">ক্যাটেগরি অনুযায়ী খরচ</h3>
         <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
           {categories.map(category => {
+          {EXPENSE_CATEGORIES.map(category => {
             const categoryExpenses = expenses.filter(e => e.category === category);
             const categoryTotal = categoryExpenses.reduce((sum, e) => sum + e.totalPrice, 0);
             return (
@@ -200,6 +202,7 @@ const ExpenseManager: React.FC = () => {
           >
             <option value="all">সব ক্যাটেগরি</option>
             {categories.map(category => (
+            {EXPENSE_CATEGORIES.map(category => (
               <option key={category} value={category}>{category}</option>
             ))}
           </select>
