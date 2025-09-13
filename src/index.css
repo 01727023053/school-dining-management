@@ -1,0 +1,154 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Kalpurush:wght@400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=SolaimanLipi:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', 'Inter', system-ui, -apple-system, sans-serif;
+  }
+  
+  body {
+    font-family: 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', 'Inter', system-ui, -apple-system, sans-serif;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    line-height: 1.6;
+    direction: ltr;
+    unicode-bidi: embed;
+  }
+  
+  * {
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+  }
+  
+  /* Enhanced input field styling for Bangla */
+  input[type="text"], 
+  input[type="email"], 
+  input[type="tel"], 
+  input[type="password"],
+  input[type="search"],
+  textarea, 
+  select {
+    font-family: 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', 'Inter', system-ui, sans-serif !important;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    direction: ltr;
+    unicode-bidi: embed;
+    ime-mode: active;
+    -ms-ime-mode: active;
+  }
+  
+  /* Placeholder styling */
+  input::placeholder, 
+  textarea::placeholder {
+    font-family: 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', 'Inter', system-ui, sans-serif !important;
+    opacity: 0.7;
+    color: #6b7280;
+  }
+}
+
+@layer components {
+  .font-bengali {
+    font-family: 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', 'Inter', system-ui, sans-serif !important;
+    line-height: 1.6;
+    letter-spacing: 0.01em;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    direction: ltr;
+    unicode-bidi: embed;
+  }
+  
+  .bangla-input {
+    font-family: 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', 'Inter', system-ui, sans-serif !important;
+    font-feature-settings: "cv02", "cv03", "cv04", "cv11";
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    direction: ltr;
+    unicode-bidi: embed;
+    ime-mode: active;
+    -ms-ime-mode: active;
+  }
+  
+  .bijoy-support {
+    font-family: 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', monospace !important;
+    ime-mode: active;
+    -ms-ime-mode: active;
+    input-method-editor: active;
+  }
+  
+  .sidebar-link {
+    @apply flex items-center px-3 py-3 text-sm font-medium rounded-lg transition-all duration-200 group;
+  }
+  
+  .sidebar-link-active {
+    @apply bg-blue-50 text-blue-700 shadow-sm border-l-4 border-blue-600;
+  }
+  
+  .sidebar-link-inactive {
+    @apply text-gray-700 hover:bg-gray-50 hover:text-gray-900 hover:shadow-sm;
+  }
+  
+  /* Enhanced form styling for Bangla */
+  .form-input-bangla {
+    @apply bangla-input border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500;
+    min-height: 2.5rem;
+    line-height: 1.6;
+  }
+  
+  .form-textarea-bangla {
+    @apply bangla-input border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-blue-500 focus:border-blue-500;
+    min-height: 4rem;
+    line-height: 1.6;
+    resize: vertical;
+  }
+}
+
+/* Ensure Bengali text renders properly */
+[lang="bn"], 
+.bengali-text, 
+.font-bengali,
+.bangla-input {
+  font-family: 'Noto Sans Bengali', 'Kalpurush', 'SolaimanLipi', 'Inter', system-ui, sans-serif !important;
+  font-display: swap;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
+/* Better support for mixed Bangla-English content */
+.mixed-content {
+  direction: ltr;
+  unicode-bidi: embed;
+}
+
+/* Improved textarea styling for Bangla */
+textarea.bangla-input {
+  font-size: 14px;
+  line-height: 1.6;
+  padding: 12px;
+  border-radius: 8px;
+  transition: all 0.2s ease-in-out;
+}
+
+textarea.bangla-input:focus {
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+  border-color: #3b82f6;
+}
+
+/* Ensure proper rendering on different devices */
+@media (max-width: 768px) {
+  .bangla-input {
+    font-size: 16px; /* Prevents zoom on iOS */
+  }
+}
